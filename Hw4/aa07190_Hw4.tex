@@ -1,0 +1,288 @@
+\documentclass[addpoints]{exam}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{venndiagram}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{float}
+\usepackage{ragged2e}
+% \usepackage{tcolorbox}
+\lstset { %
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+}
+
+% Header and footer.
+\pagestyle{headandfoot}
+\runningheadrule
+\runningfootrule
+\runningheader{Computer Architecture}{Homework 4}{CE/CS - 321/330}
+\runningfooter{}{Page \thepage\ of \numpages}{}
+\firstpageheader{}{}{}
+
+% \boxedpoints
+\printanswers
+\qformat{} %Comment this to number questions, uncomment this to not number questions
+
+\newcommand\union\cup
+\newcommand\inter\cap
+
+\title{Computer Architecture}
+\author{Ali Muhammad \\ aa07190} 
+\date{Homework 4}
+\begin{document}
+\maketitle
+
+\begin{center}
+    \gradetable[h][questions]
+\end{center}
+\begin{sloppypar}
+% \newpage
+\begin{questions}
+    \question[10]
+    \begin{center} \textbf{Question 1 [10 Marks]}\end{center}
+    
+    Caches are important to providing a high-performance memory hierarchy to processors. Below is a list of 64-bit memory address references, given as word addresses. \\ 0x03, 0xb4, 0x2b, 0x02, 0xbf, 0x58, 0xbe, 0x0e, 0xb5, 0x2c, 0xba, 0xfd
+    \begin{parts}
+        \part \textbf{[05 Marks]} For each of these references, identify the binary word address, the tag, and the index given a direct-mapped cache with 16 one-word blocks. Also list whether each reference is a hit or a miss, assuming the cache is initially empty. First insertion is already done so that you may get the idea.
+        
+        \begin{tabular}{| c | c | c | c | c |}
+            \hline
+            \textbf{Word Address} & \textbf{Binary Address} & \hspace*{4.8mm}\textbf{Tag}\hspace*{4.8mm} & \hspace*{4.8mm}\textbf{Index}\hspace*{4.8mm} & \hspace*{4.8mm}\textbf{Hit/Miss}\hspace*{4.8mm} \\ \hline
+            0x03 & 0000 0011 & 0 & 3 & M \\ \hline
+            0xb4 & & & & \\ \hline
+            0x2b & & & & \\ \hline
+            0x02 & & & & \\ \hline
+            0xbf & & & & \\ \hline
+            0x58 & & & & \\ \hline
+            0xbe & & & & \\ \hline
+            0x0e & & & & \\ \hline
+            0xb5 & & & & \\ \hline
+            0x2c & & & & \\ \hline
+            0xba & & & & \\ \hline
+            0xfd & & & & \\ \hline
+        \end{tabular}
+\pagebreak
+        \part \textbf{[05 Marks]} For each of these references, identify the binary word address, the tag, the index, and the offset given a direct-mapped cache with two-word blocks and a total size of eight blocks. Also list if each reference is a hit or a miss, assuming the cache is initially empty.
+
+        \begin{tabular}{| m{15mm} | m{15mm} | m{15mm} | m{15mm} | m{15mm} | m{20mm} |}
+            \hline
+            \raggedright \hspace*{1mm} \textbf{Word Address} &\raggedright \hspace*{0mm} \textbf{Binary Address} &\raggedright \hspace*{2mm} \textbf{Tag} &\raggedright \hspace*{1mm} \textbf{Index}&\raggedright \hspace*{1mm} \textbf{Offset} & \hspace*{1mm} \textbf{Hit/Miss} \\ \hline
+            \centering 0x03 & 0000 0011 &\centering  0 &\centering 1 &\centering 1 & \hspace*{6.5mm} M \\ \hline
+            \centering 0xb4 & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0x2b & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0x02 & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0xbf & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0x58 & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0xbe & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0x0e & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0xb5 & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0x2c & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0xba & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+            \centering 0xfd & &\centering  &\centering  &\centering  &\hspace*{6.5mm} \\ \hline
+        \end{tabular}
+    \end{parts}
+
+    \question[10]
+    \begin{center} \textbf{Question 2 [10 Marks]}\end{center}
+    For a direct-mapped cache design with a 64-bit address, the following bits of teh address are used to access the cache.
+
+    \begin{tabular}{| c | c | c |}
+        \hline \hspace*{8mm}\textbf{Tag}\hspace*{8mm} & \hspace*{8mm}\textbf{Index}\hspace*{8mm} & \hspace*{8mm}\textbf{Offset}\hspace*{8mm} \\ \hline
+        63-10 & 9-5 & 4-0 \\ \hline
+    \end{tabular}
+
+    \begin{parts}
+        \part \textbf{[03 Marks]} What is the cache block size (in words)?
+        \begin{solution}
+            
+        \end{solution} 
+        \part \textbf{[03 Marks]} How many blocks does the cache have?
+        \begin{solution}
+            
+        \end{solution}
+        \part \textbf{[04 Marks]} What is the ratio between the total bits required for such a cache implementation over the data storage bits?
+        \begin{solution}
+            
+        \end{solution}
+    \end{parts}
+    \pagebreak
+    \question[15]
+    \begin{center} \textbf{Question 3 [15 Marks]}\end{center}
+    Considering the address size of 64-bits, fill in the data for difference types of caches:
+
+    \begin{tabular}{|p{20mm} | p{10mm} | p{15mm} |p{10mm} |p{20mm} |p{15mm} |p{10mm} |p{10mm} |}
+        \hline
+        & Blocks & Data per block & Sets & Assosiativity - ways & Tag Bits & Index Bits & Offset Bits \\ \hline
+        \raggedright Fully \newline Assosiative Cache &\textcolor{white}{.} \newline \hspace*{3mm} 8 &\textcolor{white}{.} \newline \hspace*{1mm} 8 words &\textcolor{white}{.} \newline \hspace*{2mm} - - & & & & \\ \hline
+        \raggedright Direct Mapped Cache & \textcolor{white}{.} \newline \hspace*{2mm} 16 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{2mm} - - & & & & \\ \hline
+        \raggedright Set \newline Associative cache & \textcolor{white}{.} \newline \hspace*{2mm} 32 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{3mm} 4 & & & & \\ \hline
+        \raggedright Direct Mapped Cache & \textcolor{white}{.} \newline \hspace*{2mm} 64 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{2mm} - - & & & & \\ \hline
+        \raggedright Set \newline Associative Cache & \textcolor{white}{.} \newline \hspace*{1mm} 128 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{2mm} 32 & & & & \\ \hline
+        \raggedright Set \newline Associative Cache & \textcolor{white}{.} \newline \hspace*{1mm} 256 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{2mm} 32 & & & & \\ \hline
+        \raggedright Fully \newline Associative Cache & \textcolor{white}{.} \newline \hspace*{1mm} 512 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{1mm} - - & & & & \\ \hline
+        \raggedright Direct Mapped Cache & \textcolor{white}{.} \newline \hspace*{0mm} 1024 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{1mm} - - & & & & \\ \hline
+        \raggedright Set \newline Associative Cache & \textcolor{white}{.} \newline \hspace*{0mm} 2048 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{2mm} 64 & & & & \\ \hline
+        \raggedright Direct Mapped Cache & \textcolor{white}{.} \newline \hspace*{0mm} 4096 & \textcolor{white}{.} \newline \hspace*{1mm} 8 words & \textcolor{white}{.} \newline \hspace*{1mm} - - & & & & \\ \hline 
+    \end{tabular}
+
+    \question[05]
+    \begin{center}
+        \textbf{Question 4 [05 Marks]}
+    \end{center}
+    Assume the miss rate of an instruction cache is 4\% and the miss rate of the data cache is 6\%. If a processor has a CPI of 3 without any memory stalls, and the miss penalty is 100 cycles for all misses, determine how much faster a processor would run with a perfect cache that never missed. Assume the frequency of all loads and stores is 26\%.
+    \begin{solution}
+        
+    \end{solution}
+
+    \question[10]
+    \begin{center}
+        \textbf{Question 5 [10 Marks]}
+    \end{center}
+    We are given 4 arrays of size 6. Each element in an array is of 32 bytes i.e., one word. Following is the data stored in the array:
+
+    A = (25, 48, 43, 30, 47, 36) \\ B = (16, 29, 35, 38, 32, 41) \\ C = (24, 33, 5, 39, 10, 14) \\ D = (23, 7, 11, 44, 42, 22)
+
+    The array data is arranged in main memory as follows:
+
+    \begin{tabular}{|l |l |}
+        \hline 00000 \hspace*{8mm} & A[0] \hspace*{10mm} \\ \hline
+        00001 & A[1] \\ \hline 
+        00010 & A[2] \\ \hline
+        00011 & A[3] \\ \hline
+        00100 & A[4] \\ \hline
+        00101 & A[5] \\ \hline
+        00110 &  \\ \hline
+        00111 &  \\ \hline
+        01000 & B[0] \\ \hline
+        01001 & B[1] \\ \hline
+        01010 & B[2] \\ \hline
+        01011 & B[3] \\ \hline
+        01100 & B[4] \\ \hline
+        01101 & B[5] \\ \hline
+        01110 & \\ \hline
+        01111 & \\ \hline
+        10000 & C[0] \\ \hline
+        10001 & C[1] \\ \hline
+        10010 & C[2] \\ \hline
+        10011 & C[3] \\ \hline
+        10100 & C[4] \\ \hline
+        10101 & C[5] \\ \hline
+        10110 & \\ \hline
+        10111 & \\ \hline
+        11000 & D[0] \\ \hline
+        11001 & D[1] \\ \hline
+        11010 & D[2] \\ \hline
+        11011 & D[3] \\ \hline
+        11100 & D[4] \\ \hline
+        11101 & D[5] \\ \hline
+        11110 & \\ \hline
+        11111 & \\ \hline
+    \end{tabular}
+
+    We are given a direct mapped cache which contains 8 block (each block will contain one word). Insert the following elements in cache one by one and also mention whether it ws a hit or a miss. Assume that the first block of the cache will be populated by the first element of the array and so on. First insertion is already done so that you may get the idea.
+    
+    \begin{tabular}{|m{15mm} | m{17mm} | m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |}
+        \hline
+        \raggedright\textbf{Data to \hspace*{3.5mm} be Inserted} &\raggedright \textbf{Hit/Miss} & \multicolumn{8}{|c|}{\textbf{Cache Index}} \\ \hline 
+        & & \hspace*{3mm}\textbf{0} & \hspace*{3mm}\textbf{1} & \hspace*{3mm}\textbf{2} & \hspace*{3mm}\textbf{3} & \hspace*{3mm}\textbf{4} & \hspace*{3mm}\textbf{5} & \hspace*{3mm}\textbf{6} & \hspace*{3mm}\textbf{7} \\ \hline
+        A[0] & M & A[0] & & & & & & & \\ \hline
+        A[1] & & & & & & & & &\\ \hline
+        A[2] & & & & & & & & &\\ \hline
+        A[1] & & & & & & & & &\\ \hline
+        A[5] & & & & & & & & &\\ \hline
+        B[5] & & & & & & & & &\\ \hline
+        B[4] & & & & & & & & &\\ \hline
+        B[3] & & & & & & & & &\\ \hline
+        B[3] & & & & & & & & &\\ \hline
+        B[4] & & & & & & & & &\\ \hline
+        D[1] & & & & & & & & &\\ \hline
+        D[2] & & & & & & & & &\\ \hline
+        D[3] & & & & & & & & &\\ \hline
+        D[4] & & & & & & & & &\\ \hline
+        C[3] & & & & & & & & &\\ \hline
+        C[2] & & & & & & & & &\\ \hline
+        C[4] & & & & & & & & &\\ \hline
+        C[2] & & & & & & & & &\\ \hline
+    \end{tabular}
+
+    What is the Hit Ratio and the Miss Ratio in the above case?
+    \begin{solution}
+        
+    \end{solution}
+
+    \question[10]
+    \begin{center}
+        \textbf{Question 6 [10 Marks]}
+    \end{center}
+    Whenever an element from an array is accessed, it is most probable that some other remaining elements of the array are also accessed. Repeat the same task as in Question 5 but this time design a cache with 4 blocks in which each block can accommodate 2 words. The first insertion is done again so that you may get the idea.
+
+    \begin{tabular}{|m{15mm} | m{17mm} | m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |m{8.5mm} |}
+        \hline
+        \raggedright\textbf{Data to \hspace*{3.5mm} be Inserted} &\raggedright \textbf{Hit/Miss} & \multicolumn{8}{|c|}{\textbf{Cache Index}} \\ \hline 
+        & & \multicolumn{2}{|c|}{\textbf{0}} & \multicolumn{2}{|c|}{\textbf{1}} & \multicolumn{2}{|c|}{\textbf{2}} & \multicolumn{2}{|c|}{\textbf{3}} \\ \hline
+        A[0] & M & A[0] & A[1] & & & & & & \\ \hline
+        A[1] & & & & & & & & &\\ \hline
+        A[2] & & & & & & & & &\\ \hline
+        A[1] & & & & & & & & &\\ \hline
+        A[5] & & & & & & & & &\\ \hline
+        B[5] & & & & & & & & &\\ \hline
+        B[4] & & & & & & & & &\\ \hline
+        B[3] & & & & & & & & &\\ \hline
+        B[3] & & & & & & & & &\\ \hline
+        B[4] & & & & & & & & &\\ \hline
+        D[1] & & & & & & & & &\\ \hline
+        D[2] & & & & & & & & &\\ \hline
+        D[3] & & & & & & & & &\\ \hline
+        D[4] & & & & & & & & &\\ \hline
+        C[3] & & & & & & & & &\\ \hline
+        C[2] & & & & & & & & &\\ \hline
+        C[4] & & & & & & & & &\\ \hline
+        C[2] & & & & & & & & &\\ \hline
+    \end{tabular}
+
+    What is the Hit Ratio and the Miss Ratio in this case? Is it better than the previous? Does loading the whole array into the cache helps us in accessing the elements fast?
+    \begin{solution}
+        
+    \end{solution}
+
+    \question[20]
+    \begin{center}
+        \textbf{Question 7 [20 Marks]}
+    \end{center}
+
+    \begin{parts}
+        \part \textbf{[05 Marks]} Repeat Question 5, this time using a fully associative cache containing 8 blocks. Use LRU replacement scheme for eviction.
+        \part \textbf{[05 Marks]} Repeat Question 6, this time using a fully associative cache containing 4 blocks in which each block can accomodate 2 words. Use LRU replacement scheme for eviction.
+        \part \textbf{[05 Marks]} Compare the Hit \& Miss Ratio for both the cases (i.e., loading a single element vs. loading two elements) for both the caches. Which cache helps us in accessing elements faster? and in which case? [Hint: To answer which cache helps us in accessing the elements faster, compare the Hit Ratios for both the caches]
+        \part \textbf{[05 Marks]} Repeat Question 6, this time using a two-way set associative cache with 2 sets of 2 blocks. Use LRU replacement scheme for eviction.
+    \end{parts}
+
+    \question[20]
+    \begin{center}
+        \textbf{Question 8 [20 Marks]}
+    \end{center}
+
+    In this exercise, we will examine how replacement schemes affect miss rates. Assume a two-way set associative cache with four one-word blocks. Consider the following word address sequence: 0, 1, 2, 3, 4, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0.
+
+    \begin{parts}
+        \part \textbf{[05 Marks]} Assuming an LRU replacement scheme, which accesses are hits?
+        \part \textbf{[05 Marks]} Most Recently Used (MRU) is a cache replacement scheme which removes the most recently used items first. A MRU scheme is good in situations in which the older an item is, the more likely it is to be accessed. Assuming an MRU (most recently used) replacement scheme, which accesses are hits?
+        \part \textbf{[05 Marks]} Describe an optimal replacement scheme for this sequence. Which accesses are hits using this policy?
+        \part \textbf{[05 Marks]} Describe why it is difficult to implement a cache replacement scheme that is optimal for all address sequences.
+    \end{parts}
+
+
+\end{questions}
+\end{sloppypar}
+\end{document}
