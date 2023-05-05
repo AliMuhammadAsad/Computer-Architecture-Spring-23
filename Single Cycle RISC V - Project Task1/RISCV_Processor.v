@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/22/2023 5:09:04 PM
+// Create Date: 05/03/2023 11:14:36 PM
 // Design Name: 
-// Module Name: RISC_V
+// Module Name: RISCV_Processor
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -19,8 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module RISC_V(
-    input clk,
+module RISCV_Processor(input clk,
     input reset,
     output reg [63:0] PC_In, PC_Out, ReadData1, ReadData2, WriteData, Result, Read_Data, imm_data,
     output reg [31:0] Instruction,
@@ -53,7 +52,7 @@ Instruction_Memory IM(.Inst_Address(PC_Out), .Instruction(Instruction));
 Instruction_Parser IP(.Instruction(Instruction), .Opcode(opcode), .RD(rd), .Funct3(funct3), .RS1(rs1), .RS2(rs2), .Funct7(funct7));
 Imm_Gen Immgen(.Instruction(Instruction), .Imm(imm_data));
 Control_Unit cu(.Opcode(opcode), .Branch(Branch), .MemRead(MemRead), .MemtoReg(MemtoReg), .ALUOp(ALUOp), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite));
-registerFile rf(.clk(clk), .reset(reset), .WriteData(WriteData), .RS1(rs1), .RS2(rs2), .RD(rd), .RegWrite(RegWrite), .ReadData1(ReadData1), .ReadData2(ReadData2));
+RegisterFile rf(.clk(clk), .reset(reset), .WriteData(WriteData), .RS1(rs1), .RS2(rs2), .RD(rd), .RegWrite(RegWrite), .ReadData1(ReadData1), .ReadData2(ReadData2));
 assign Funct = {Instruction[30], Instruction[14:12]};
 
 // Execute / Address Calculation // 
@@ -61,11 +60,10 @@ Adder A2(.A(PC_Out), .B(imm_data * 2), .Out(adder_out2));
 Mux_2x1 muxmid(.A(ReadData2), .B(imm_data), .S(ALUSrc), .Out(muxmid_out));
 ALU_Control aluc(.ALUOp(ALUOp), .Funct(Funct), .Operation(Operation));
 ALU64bit ALU(.A(ReadData1), .B(muxmid_out), .ALUOp(Operation), .Result(Result));
-Branch_Unit BU(.Funct3(funct3), .ReadData1(ReadData1), .ReadData2(ReadData2), .addermuxselect(addermuxselect));
+Branch_unit BU(.Funct3(funct3), .ReadData1(ReadData1), .ReadData2(ReadData2), .addermuxselect(addermuxselect));
 // MEM: Memory Access //
 //Data_Memory DM(.Mem_Addr(Result), .Write_Data(ReadData2), .clk(clk), .MemWrite(MemWrite), .MemRead(MemRead), .Read_Data(Read_Data));
 Data_Memory DM(.clk(clk), .MemWrite(MemWrite), .MemRead(MemRead), .Mem_Addr(Result), .Write_Data(ReadData2), .Read_Data(Read_Data), .index0(index0), .index1(index1), .index2(index2), .index3(index3), .index4(index4));
 // Write Back // 
 Mux_2x1 muxlast(.A(Result), .B(Read_Data), .S(MemtoReg), .Out(WriteData));
-
-endmodule 
+endmodule
